@@ -28,12 +28,6 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -144,7 +138,7 @@ app
  * Download using youtube through ipc
  */
 ipcMain.on('youtube-dl-download-playlist', async (event, arg: string) => {
-  // const msg = () => `Downloaded!`;
+  const msg = () => `Downloaded!`;
   console.log(arg)
 
 
@@ -152,16 +146,17 @@ ipcMain.on('youtube-dl-download-playlist', async (event, arg: string) => {
   // youtube-dl --extract-audio --audio-format mp3 <video URL>
   // Playlist
   // youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 160K --output "%(title)s.%(ext)s" --yes-playlist
-  youtubedl(arg, {
-    extractAudio: true,
-    dumpSingleJson: true,
-    noWarnings: true,
-    noCheckCertificate: true,
-    preferFreeFormats: true,
-    youtubeSkipDashManifest: true,
-    referer: 'arg'
-  }).then((output) => console.log(output))
+  // youtubedl(arg, {
+  //   extractAudio: true,
+  //   referer: arg
+  // }).then((output) => console.log(output))
 
-  // event.reply('youtube-dl-download-playlist', msg);
+  event.reply('youtube-dl-download-playlist', msg());
 });
 
+ipcMain.on('ipc-example', async (event, arg) => {
+  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+  console.log(msgTemplate(arg));
+
+  event.reply('ipc-example', msgTemplate('pong'));
+});

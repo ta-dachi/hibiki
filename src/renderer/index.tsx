@@ -7,13 +7,12 @@ root.render(<App />);
 
 // calling IPC exposed from preload script
 window.electron.ipcRenderer.on('ipc-example', (arg) => {
-  // eslint-disable-next-line no-console
   console.log(arg);
 });
-window.electron.ipcRenderer.myPing();
+
 
 // calling IPC exposed from preload script
-window.electron.ipcRenderer.once('youtube-dl-download-playlist', (arg) => {
+window.electron.ipcRenderer.on('youtube-dl-download-playlist', (arg) => {
   // eslint-disable-next-line no-console
   console.log(arg);
   // console.log('test')
