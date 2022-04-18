@@ -6,17 +6,15 @@ const root = createRoot(container);
 root.render(<App />);
 
 // calling IPC exposed from preload script
-window.electron.ipcRenderer.once('ipc-example', (arg) => {
+window.electron.ipcRenderer.on('ipc-example', (arg) => {
   // eslint-disable-next-line no-console
   console.log(arg);
 });
 window.electron.ipcRenderer.myPing();
 
 // calling IPC exposed from preload script
-window.electron.ipcRenderer.once('ipc-test', (arg) => {
+window.electron.ipcRenderer.once('youtube-dl-download-playlist', (arg) => {
   // eslint-disable-next-line no-console
   console.log(arg);
-  console.log('test')
+  // console.log('test')
 });
-
-window.electron.ipcRenderer.myTest('boo')

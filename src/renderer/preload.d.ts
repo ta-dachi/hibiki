@@ -4,7 +4,7 @@ declare global {
       ipcRenderer: {
         myPing(): void;
         // Add more methods
-        myTest(string: string): void;
+        downloadPlaylist(string: string): void;
         on(
           channel: string,
           func: (...args: unknown[]) => void

@@ -32,8 +32,6 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
 
-
-
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
@@ -142,36 +140,28 @@ app
   })
   .catch(console.log);
 
-ipcMain.on('ipc-test', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-
-  try {
-    exec("ls -la", (error, stdout, stderr) => {
-      if (error) {
-          console.log(`error: ${error.message}`);
-          return;
-      }
-      if (stderr) {
-          console.log(`stderr: ${stderr}`);
-          return;
-      }
-      console.log(`stdout: ${stdout}`);
-    });
-    
-  
-  } catch (error) {
-    console.error(error)
-  }
+/**
+ * Download using youtube through ipc
+ */
+ipcMain.on('youtube-dl-download-playlist', async (event, arg: string) => {
+  // const msg = () => `Downloaded!`;
+  console.log(arg)
 
 
+  // single file
   // youtube-dl --extract-audio --audio-format mp3 <video URL>
-
-  youtubedl('https://www.youtube.com/watch?v=6xKWiCMKKJg', {
-    extractAudio: true
+  // Playlist
+  // youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 160K --output "%(title)s.%(ext)s" --yes-playlist
+  youtubedl(arg, {
+    extractAudio: true,
+    dumpSingleJson: true,
+    noWarnings: true,
+    noCheckCertificate: true,
+    preferFreeFormats: true,
+    youtubeSkipDashManifest: true,
+    referer: 'arg'
   }).then((output) => console.log(output))
 
-
-  event.reply('ipc-test', msgTemplate('pong'));
+  // event.reply('youtube-dl-download-playlist', msg);
 });
 

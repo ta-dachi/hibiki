@@ -5,11 +5,11 @@ contextBridge.exposeInMainWorld('electron', {
     myPing() {
       ipcRenderer.send('ipc-example', 'ping');
     },
-    myTest(string: string) {
-      ipcRenderer.send('ipc-test', string);
+    downloadPlaylist(string: string) {
+      ipcRenderer.send('youtube-dl-download-playlist', string);
     },
     on(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'ipc-test'];
+      const validChannels = ['ipc-example', 'youtube-dl-download-playlist'];
       if (validChannels.includes(channel)) {
         const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
           func(...args);
@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld('electron', {
       return undefined;
     },
     once(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'ipc-test'];
+      const validChannels = ['ipc-example', 'youtube-dl-download-playlist'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (_event, ...args) => func(...args));
