@@ -146,12 +146,21 @@ ipcMain.on('youtube-dl-download-playlist', async (event, arg: string) => {
   // youtube-dl --extract-audio --audio-format mp3 <video URL>
   // Playlist
   // youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 160K --output "%(title)s.%(ext)s" --yes-playlist
-  // youtubedl(arg, {
-  //   extractAudio: true,
-  //   referer: arg
-  // }).then((output) => console.log(output))
+  youtubedl(arg, {
+    extractAudio: true,
+    audioFormat: 'mp3',
+    audioQuality: 160,
+    ffmpegLocation: '/Users/tadachi/Desktop/repos/hibiki/bin/mac/ffmpeg'
+  }).then((output) => {
+    console.log(output)
+    event.reply('youtube-dl-download-playlist', msg());
+  }).catch((error) => {
+    console.log(error)
+    event.reply('youtube-dl-download-playlist', 'Error!');
+    event.reply('youtube-dl-download-playlist', error);
+  })
 
-  event.reply('youtube-dl-download-playlist', msg());
+
 });
 
 ipcMain.on('ipc-example', async (event, arg) => {

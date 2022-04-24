@@ -34,6 +34,27 @@ npm run package
 
 See [docs and guides here](https://electron-react-boilerplate.js.org/docs/installation)
 
+## FFmpeg compile command:
+```
+./configure --disable-everything --disable-network --disable-autodetect --enable-small --enable-decoder=aac,mp3 --enable-demuxer=mov,m4v,matroska --enable-muxer=mp3,mp4 --enable-protocol=file --enable-libmp3lame --enable-encoder=libmp3lame --enable-filter=aresample --extra-cflags="-I/opt/homebrew/include" --extra-ldflags="-L/opt/homebrew/lib"
+```
+## Install lame via package manager:
+
+### Mac OS 
+
+```
+brew install lame
+```
+
+## libmp3lame compile command:
+
+Download source: https://sourceforge.net/projects/lame/files/lame/3.100/
+```
+./configure --disable-decoder --host="x86_64"
+make
+make install
+```
+
 ## License
 
 MIT © [Electron React Boilerplate](https://github.com/electron-react-boilerplate)

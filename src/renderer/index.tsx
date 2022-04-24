@@ -9,11 +9,3 @@ root.render(<App />);
 window.electron.ipcRenderer.on('ipc-example', (arg) => {
   console.log(arg);
 });
-
-
-// calling IPC exposed from preload script
-window.electron.ipcRenderer.on('youtube-dl-download-playlist', (arg) => {
-  // eslint-disable-next-line no-console
-  console.log(arg);
-  // console.log('test')
-});
