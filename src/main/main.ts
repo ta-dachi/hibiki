@@ -18,6 +18,8 @@ import { resolveHtmlPath } from './util';
 import { exec } from 'child_process';
 import youtubedl from 'youtube-dl-exec';
 
+const youtubedlRAW = require('youtube-dl-exec')
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -137,28 +139,45 @@ app
 /**
  * Download using youtube through ipc
  */
-ipcMain.on('youtube-dl-download-playlist', async (event, arg: string) => {
+ipcMain.on('youtube-dl-download-playlist', async (event, url: string) => {
   const msg = () => `Downloaded!`;
-  console.log(arg)
+  console.log(url)
 
 
   // single file
   // youtube-dl --extract-audio --audio-format mp3 <video URL>
   // Playlist
   // youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 160K --output "%(title)s.%(ext)s" --yes-playlist
-  youtubedl(arg, {
+
+
+
+  youtubedl(url, {
     extractAudio: true,
     audioFormat: 'mp3',
     audioQuality: 160,
-    ffmpegLocation: '/Users/tadachi/Desktop/repos/hibiki/bin/mac/ffmpeg'
+    ffmpegLocation: '/Users/tadachi/Desktop/repos/hibiki/bin/mac/ffmpeg',
   }).then((output) => {
     console.log(output)
-    event.reply('youtube-dl-download-playlist', msg());
+    event.reply('youtube-dl-download-playlist', output);
   }).catch((error) => {
     console.log(error)
     event.reply('youtube-dl-download-playlist', 'Error!');
     event.reply('youtube-dl-download-playlist', error);
   })
+
+  // Subprocess test code
+  // const subprocess = youtubedlRAW.raw(url, {
+  //   noCallHome: true,
+  //   noCheckCertificate: true,
+  //   preferFreeFormats: true,
+  //   format: 'mp4',
+  //   youtubeSkipDashManifest: true,
+  //   output: '%(id)s.%(ext)s'
+  // })
+
+  // subprocess.stdout.on('data', (data: any) => {
+  //   console.log(data)
+  // })
 
 
 });

@@ -8,9 +8,11 @@ import { useState } from 'react';
 
 const Main = () => {
   return (
-    <div>
+    <div className="w-screen h-screen flex">
       {/* <div className="bg-gray-500 p-5 text-sm">Tailwind</div> */}
-      <DownloadForm />
+      <div className="m-auto">
+        <DownloadForm classes="grow-1"/>
+      </div>
     </div>
   );
 };

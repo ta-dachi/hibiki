@@ -4,9 +4,11 @@ type DownloadFormState = {
   [x: string]: string | boolean;
 };
 
+type DownloadFormProps = {
+  classes?: string
+}
 
-
-export const DownloadForm = () => {
+export const DownloadForm = ({classes} : DownloadFormProps) => {
   const [state, setState] = useState<DownloadFormState>({
     url: 'https://www.youtube.com/watch?v=9bZkp7q19f0',
   });
@@ -35,7 +37,7 @@ export const DownloadForm = () => {
   };
 
   return (
-    <div className="w-6/12">
+    <div className={`${classes}`}>
       {/* // DEBUG */}
       <div>
         <pre>{JSON.stringify(state)}</pre>
@@ -52,7 +54,7 @@ export const DownloadForm = () => {
         />
       </div>
       {/*  */}
-      <div>
+      <div className="mt-4">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none disabled:opacity-25"
           disabled={disableDownload}
