@@ -9,3 +9,6 @@ root.render(<App />);
 window.electron.ipcRenderer.on('ipc-example', (arg) => {
   console.log(arg);
 });
+
+// Run this to setup the app
+window.electron.ipcRenderer.setup()

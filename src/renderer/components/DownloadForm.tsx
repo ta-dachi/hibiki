@@ -1,4 +1,6 @@
+import { HibikiConfiguration } from 'main/types';
 import { useEffect, useState } from 'react';
+import { json } from 'stream/consumers';
 
 type DownloadFormState = {
   [x: string]: string | boolean;
@@ -17,7 +19,21 @@ export const DownloadForm = ({classes} : DownloadFormProps) => {
 
   const [errorLog, setErrorLog] = useState<string>("No Errors")
 
+  const [configuration, setConfiguration] = useState<HibikiConfiguration>({
+    projectRoot: ''
+  })
+
   useEffect(() => {
+
+
+    window.electron.ipcRenderer.on('setup', (output) => {
+      setConfiguration(output as HibikiConfiguration)
+      // eslint-disable-next-line no-console
+      console.log(output);
+      // console.log('test')
+    });
+
+
     // calling IPC exposed from preload script
     window.electron.ipcRenderer.on('youtube-dl-download-playlist', (output) => {
       // eslint-disable-next-line no-console
@@ -67,9 +83,15 @@ export const DownloadForm = ({classes} : DownloadFormProps) => {
         </button>
       </div>
 
-      <div>
+      <div className="mt-4">
+        <pre>{JSON.stringify(configuration)}</pre>
+      </div>
+
+
+      <div className="mt-4">
         <pre>{errorLog}</pre>
       </div>
+
 
       {/* <div>
         <button

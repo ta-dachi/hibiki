@@ -8,8 +8,13 @@ contextBridge.exposeInMainWorld('electron', {
     downloadPlaylist(string: string) {
       ipcRenderer.send('youtube-dl-download-playlist', string);
     },
+    // Setup the app by instantiating needed variables like project root
+    setup() {
+      ipcRenderer.send('setup');
+    },
+
     on(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'youtube-dl-download-playlist'];
+      const validChannels = ['ipc-example', 'youtube-dl-download-playlist', 'setup'];
       if (validChannels.includes(channel)) {
         const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
           func(...args);
@@ -22,7 +27,7 @@ contextBridge.exposeInMainWorld('electron', {
       return undefined;
     },
     once(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'youtube-dl-download-playlist'];
+      const validChannels = ['ipc-example', 'youtube-dl-download-playlist', 'setup'];
       if (validChannels.includes(channel)) {
         // Deliberately strip event as it includes `sender`
         ipcRenderer.once(channel, (_event, ...args) => func(...args));

@@ -5,6 +5,8 @@ declare global {
         myPing(): void;
         // Add more methods
         downloadPlaylist(string: string): void;
+        // Setup the app by instantiating needed variables like project root
+        setup(): void;
         on(
           channel: string,
           func: (...args: unknown[]) => void

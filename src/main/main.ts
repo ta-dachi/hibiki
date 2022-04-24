@@ -1,3 +1,4 @@
+import { HibikiConfiguration } from './types.d';
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -136,6 +137,14 @@ app
   })
   .catch(console.log);
 
+ipcMain.on('setup', async (event) => {
+  const hibikiConfiguration: HibikiConfiguration = {
+    projectRoot: process.env.PWD ?? ""
+  }
+
+  event.reply('setup', hibikiConfiguration);
+})
+
 /**
  * Download using youtube through ipc
  */
@@ -150,12 +159,32 @@ ipcMain.on('youtube-dl-download-playlist', async (event, url: string) => {
   // youtube-dl --ignore-errors --format bestaudio --extract-audio --audio-format mp3 --audio-quality 160K --output "%(title)s.%(ext)s" --yes-playlist
 
 
+  // try {
+  //   const ex = await exec("ls -la", (error, stdout, stderr) => {
+  //     if (error) {
+  //         console.log(`error: ${error.message}`);
+  //         return;
+  //     }
+  //     if (stderr) {
+  //         console.log(`stderr: ${stderr}`);
+  //         return;
+  //     }
+  //     console.log(`stdout: ${stdout}`);
+  //   });
+    
+  
+  // } catch (error) {
+  //   console.error(error)
+  // }
+
+  // eg. /Users/tadachi/Desktop/repos/hibiki/
+  const projectRoot = process.env.PWD
 
   youtubedl(url, {
     extractAudio: true,
     audioFormat: 'mp3',
     audioQuality: 160,
-    ffmpegLocation: '/Users/tadachi/Desktop/repos/hibiki/bin/mac/ffmpeg',
+    ffmpegLocation: `${projectRoot}/bin/mac/ffmpeg`,
   }).then((output) => {
     console.log(output)
     event.reply('youtube-dl-download-playlist', output);
