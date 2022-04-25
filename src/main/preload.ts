@@ -5,8 +5,11 @@ contextBridge.exposeInMainWorld('electron', {
     myPing() {
       ipcRenderer.send('ipc-example', 'ping');
     },
-    downloadPlaylist(string: string) {
-      ipcRenderer.send('youtube-dl-download-playlist', string);
+    downloadPlaylist(url: string) {
+      ipcRenderer.send('youtube-dl-download-playlist', url);
+    },
+    getMetadata(url: string) {
+      ipcRenderer.send('youtube-dl-get-metadata', url);
     },
     // Setup the app by instantiating needed variables like project root
     setup() {
@@ -14,7 +17,7 @@ contextBridge.exposeInMainWorld('electron', {
     },
 
     on(channel: string, func: (...args: unknown[]) => void) {
-      const validChannels = ['ipc-example', 'youtube-dl-download-playlist', 'setup'];
+      const validChannels = ['ipc-example', 'youtube-dl-download-playlist', 'setup', 'youtube-dl-get-metadata'];
       if (validChannels.includes(channel)) {
         const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
           func(...args);

@@ -4,7 +4,8 @@ declare global {
       ipcRenderer: {
         myPing(): void;
         // Add more methods
-        downloadPlaylist(string: string): void;
+        downloadPlaylist(url: string): void;
+        getMetadata(url: string): void,
         // Setup the app by instantiating needed variables like project root
         setup(): void;
         on(

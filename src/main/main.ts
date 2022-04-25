@@ -1,4 +1,4 @@
-import { HibikiConfiguration } from './types.d';
+import { HibikiConfiguration, YoutubeMetadata } from './types.d';
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -14,10 +14,11 @@ import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
+import { resolveHtmlPath, subset } from './util';
 //
 import { exec } from 'child_process';
 import youtubedl from 'youtube-dl-exec';
+import Database from 'better-sqlite3';
 
 const youtubedlRAW = require('youtube-dl-exec')
 
@@ -137,13 +138,46 @@ app
   })
   .catch(console.log);
 
-ipcMain.on('setup', async (event) => {
+
+/**
+ * Events
+ */
+
+ ipcMain.on('setup', async (event) => {
   const hibikiConfiguration: HibikiConfiguration = {
     projectRoot: process.env.PWD ?? ""
   }
 
   event.reply('setup', hibikiConfiguration);
 })
+
+ipcMain.on('youtube-dl-get-metadata', async (event, url: string) => {
+  console.log(url)
+
+  youtubedl(url, {
+    simulate: true,
+    dumpJson: true,
+    printJson: true,
+  }).then((output) => {
+    const metadata = subset<any>(output, 
+      "artist",
+      "album",
+      "duration",
+      "thumbnails",
+      "upload_date",
+      "like_count",
+      "view_count",
+      "webpage_url"
+    ) as YoutubeMetadata
+    console.log(metadata)
+    event.reply('youtube-dl-get-metadata', metadata);
+  }).catch((error) => {
+    console.log(error)
+    event.reply('youtube-dl-get-metadata', 'Error!');
+    event.reply('youtube-dl-get-metadata', error);
+  })
+})
+
 
 /**
  * Download using youtube through ipc
@@ -217,3 +251,14 @@ ipcMain.on('ipc-example', async (event, arg) => {
 
   event.reply('ipc-example', msgTemplate('pong'));
 });
+
+/**
+ * Database
+ */
+
+//  const db = new Database('foobar.db', { verbose: console.log });
+//  const createStmt = db.prepare('CREATE TABLE IF NOT EXISTS youtube_urls (id INT, url CHAR)');
+
+//  createStmt.run()
+
+//  const insertStmt = db.prepare('INSERT INTO youtube_urls (id, url) VALUES (0, test)');
