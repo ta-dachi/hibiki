@@ -16,11 +16,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath, subset } from './util';
 //
-import { exec } from 'child_process';
 import youtubedl from 'youtube-dl-exec';
-import Database from 'better-sqlite3';
-
-const youtubedlRAW = require('youtube-dl-exec')
 
 export default class AppUpdater {
   constructor() {
@@ -77,6 +73,7 @@ const createWindow = async () => {
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {
+      nodeIntegration: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),

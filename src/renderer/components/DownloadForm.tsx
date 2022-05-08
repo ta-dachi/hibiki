@@ -1,6 +1,6 @@
 import { HibikiConfiguration, YoutubeMetadata } from 'main/types';
-import { useDebounce } from 'main/util';
 import { useEffect, useMemo, useState } from 'react';
+import { useDebounce } from 'renderer/web_util';
 
 type DownloadFormState = {
   [x: string]: string | boolean;

@@ -223,10 +223,11 @@
     "electron-log": "^4.4.6",
     "electron-updater": "^4.6.5",
     "history": "^5.3.0",
-    "lodash-es": "^4.17.21",
+    "lodash": "^4.17.21",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
+    "url": "^0.11.0",
     "youtube-dl-exec": "^2.0.9"
   },
   "devEngines": {

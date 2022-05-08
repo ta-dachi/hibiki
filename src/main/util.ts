@@ -1,9 +1,10 @@
-/* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
 import { URL } from 'url';
 import path from 'path';
 import { useCallback, useState } from 'react';
 import { debounce } from 'lodash-es';
+import _ from 'lodash';
 
+/* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
 export let resolveHtmlPath: (htmlFileName: string) => string;
 
 if (process.env.NODE_ENV === 'development') {
@@ -54,7 +55,7 @@ export const useDebounce = (obj: any = null, wait: number = 1000) => {
   };
 
   const _debounce = useCallback(
-    debounce((_prop: string) => {
+    _.debounce((_prop: string) => {
       console.log("updating search");
       setState(_prop);
     }, wait),
